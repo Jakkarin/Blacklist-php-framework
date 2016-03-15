@@ -1,3 +1,4 @@
-app/caches/routes/*!.gitignore
-app/caches/views/*!.gitignore
-app/caches/data/*!.gitignore
+app/caches/routes/*.cache
+app/caches/views/*.cache
+app/caches/data/*.cache
+app/caches/*.cache

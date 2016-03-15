@@ -1,1 +1,0 @@
-[GET]/\[index\]/:mainController@index

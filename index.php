@@ -14,6 +14,8 @@ define('APP_PATH', APP_ROOT . 'app' . DIRECTORY_SEPARATOR);
 define('APP_CONTENT', APP_ROOT . 'contents' . DIRECTORY_SEPARATOR);
 define('APP_SYSTEM', APP_ROOT . 'systems' . DIRECTORY_SEPARATOR);
 
+define('HTTP_HOST_TOKEN', md5($_SERVER['HTTP_HOST']));
+
 /**
  * PSR-4: Autoloader
  * @var Autoloader

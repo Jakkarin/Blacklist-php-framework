@@ -8,7 +8,7 @@ class View
             $_config = Config::get('app');
             $_template = $_config['template'];
         } $_viewPath = APP_PATH . 'views/' . $_template . '/' . $_view . '.blade.php';
-        $_cahcePath = APP_PATH . 'caches/views/' . md5($_template . $_view);
+        $_cahcePath = APP_PATH . 'caches/views/' . md5($_template . $_view) . '.cache';
         $_viewTime = filemtime($_viewPath);
         if ( ! file_exists($_cahcePath))
             self::makeCache($_view, $_viewPath, $_cahcePath, $_viewTime);

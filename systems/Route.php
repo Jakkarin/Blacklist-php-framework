@@ -2,11 +2,6 @@
 
 class Route
 {
-    public static function setDomain($_domain)
-    {
-        return ($GLOBALS['routeDomain'] = APP_PATH . 'caches/routes/' . $_domain);
-    }
-
     public static function pattern($_pn, $_pattern)
     {
         return ($GLOBALS['routePattern'][$_pn] = '(' . $_pattern . ')');
@@ -66,7 +61,7 @@ class Route
     public static function domain($_domain, $_callback, $_newPatterns = false)
     {
         self::setModTime();
-        $GLOBALS['routeDomain'] = APP_PATH . 'caches/routes/' . $_domain;
+        $GLOBALS['routeDomain'] = APP_PATH . 'caches/' . md5($_domain) . '.cache';
         if ($_newPatterns)
             $GLOBALS['routePattern'] = array();
         return call_user_func($_callback);

@@ -3,21 +3,21 @@
 class App
 {
     public static $routePath = (APP_PATH . 'routes.php');
-    public static $routeCachePath = (APP_PATH . '/caches/routes/');
+    public static $routeCachePath = (APP_PATH . 'caches/' . HTTP_HOST_TOKEN . '.cache');
 
     public static function run($app)
     {
         $_routePath = self::$routePath;
-        $_routeCachePath = self::$routeCachePath . $_SERVER['HTTP_HOST'];
+        $_routeCachePath = self::$routeCachePath;
         $_routeCahceExist = file_exists($_routeCachePath);
         $GLOBALS['routeModTime'] = filemtime($_routePath);
         if ($_routeCahceExist) {
             $_routeCahce = filemtime($_routeCachePath);
             if ($GLOBALS['routeModTime'] !== $_routeCahce)
-                if (array_map('unlink', glob(APP_PATH . '/caches/routes/*'))) $_routeCahceExist = false;
+                if (array_map('unlink', glob(APP_PATH . 'caches/*.cache'))) $_routeCahceExist = false;
         } if ( ! $_routeCahceExist) {
             $GLOBALS['routePattern'] = array();
-            Route::setDomain($_SERVER['HTTP_HOST']);
+            $GLOBALS['routeDomain'] = $_routeCachePath;
             require $_routePath;
             Route::setModTime();
             unset($GLOBALS['routePattern'], $GLOBALS['routeDomain']);
@@ -58,7 +58,7 @@ class App
         $_uri = ltrim(str_replace($app['sub_folder'], '', $_uri), '/');
         if ($_uri === '') $_uri = '[index]';
         $_requestMethod = '/\[(Controller|' . $_SERVER['REQUEST_METHOD'] . ')\](.*)/';
-        $_fp = fopen(self::$routeCachePath . $_SERVER['HTTP_HOST'], 'r');
+        $_fp = fopen(self::$routeCachePath, 'r');
         while ( ! feof($_fp)) {
             if (preg_match($_requestMethod, fgets($_fp), $_match)) {
                 $_route = explode(':', $_match[2]);
