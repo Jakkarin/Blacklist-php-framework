@@ -13,7 +13,7 @@ class Cache
      */
     public static function get($_cacheName)
     {
-        $_cahcePath = APP_PATH . 'app/caches/data/' . md5($_cacheName);
+        $_cahcePath = APP_PATH . 'app/caches/data/' . md5($_cacheName) . '.cache';
         return unserialize(file_get_contents($_cahcePath));
     }
 
@@ -25,7 +25,7 @@ class Cache
      */
     public static function set($_cacheName, $_data)
     {
-        $_cahcePath = APP_PATH . 'app/caches/data/' . md5($_cacheName);
+        $_cahcePath = APP_PATH . 'app/caches/data/' . md5($_cacheName) . '.cache';
         return file_put_contents($_cahcePath, serialize($_data), LOCK_EX);
     }
 
@@ -38,7 +38,7 @@ class Cache
      */
     public static function remember($_cacheName, $_callback, $_timeOut = 0)
     {
-        $_cahcePath = APP_PATH . 'app/caches/data/' . md5($_cacheName);
+        $_cahcePath = APP_PATH . 'app/caches/data/' . md5($_cacheName) . '.cache';
         if ( ! file_exists($_cahcePath)) {
             if ($_timeOut > 0)
                 $_timeOut = time() + $_timeOut;
@@ -63,7 +63,7 @@ class Cache
      */
     public static function forget($_cacheName)
     {
-        return unlink(APP_PATH . 'app/caches/data/' . md5($_cacheName));
+        return unlink(APP_PATH . 'app/caches/data/' . md5($_cacheName) . '.cache');
     }
 
     /**
