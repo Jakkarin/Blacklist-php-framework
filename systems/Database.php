@@ -5,18 +5,18 @@ class Database
     /**
      * เชื่อมต่อฐานข้อมูล โดยค้นหา ชนิดฐานข้อมูลก่อน
      * Connect database with dirver name.
-     * @param Array $_dbConfig
-     * @param String $_dirvers
+     * @param Array $dbConfig
+     * @param String $dirver
      */
-    public static function connect($_dbConfig = null, $_dirvers = null)
+    public static function connect($dbConfig = null, $dirver = null)
     {
-        if (empty($_dbConfig))
-            $_dbConfig = Config::get('database');
-        $_providers = array(
-            'mysql'     => 'systems\\dirvers\\PDOMysql\\builder'
-        ); if (empty($_dirvers))
-            $_dirvers = $_providers[$_dbConfig['dirvers']];
-        $_dirvers::initialize($_dbConfig);
+        if (empty($dbConfig))
+            $dbConfig = Config::get('database');
+        $drivers = array(
+            'mysql'     => 'systems\\dirvers\\PDOMysql\\Builder'
+        ); if (empty($dirver))
+            $dirver = $drivers[$dbConfig['Dirver']];
+        $dirver::initialize($dbConfig);
     }
 
     /**

@@ -6,11 +6,11 @@
 * @return String (random string)
 */
 if ( ! function_exists('str_random')) {
-    function str_random($_n = 60) {
-        $_characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $_randString = '';
-        for ($_i = 0; $_i < $_n; $_i++) {
-            $_randString .= $_characters[rand(0,62)];
-        } return $_randString;
+    function str_random($n = 60) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randString = '';
+        for ($i = 0; $i < $n; $i++) {
+            $randString .= $characters[rand(0,62)];
+        } return $randString;
     }
 }

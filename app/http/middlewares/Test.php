@@ -1,6 +1,6 @@
 <?php namespace app\http\middlewares;
 
-class test
+class Test
 {
     public function run()
     {

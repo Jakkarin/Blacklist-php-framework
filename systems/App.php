@@ -7,65 +7,65 @@ class App
 
     public static function run($app)
     {
-        $_routePath = self::$routePath;
-        $_routeCachePath = self::$routeCachePath;
-        $_routeCahceExist = file_exists($_routeCachePath);
-        $GLOBALS['routeModTime'] = filemtime($_routePath);
-        if ($_routeCahceExist) {
-            $_routeCahce = filemtime($_routeCachePath);
-            if ($GLOBALS['routeModTime'] !== $_routeCahce)
-                if (array_map('unlink', glob(APP_PATH . 'caches/*.cache'))) $_routeCahceExist = false;
-        } if ( ! $_routeCahceExist) {
+        $routePath = self::$routePath;
+        $routeCachePath = self::$routeCachePath;
+        $routeCacheExists = file_exists($routeCachePath);
+        $GLOBALS['routeModTime'] = filemtime($routePath);
+        if ($routeCacheExists) {
+            $routeCache = filemtime($routeCachePath);
+            if ($GLOBALS['routeModTime'] !== $routeCache)
+                if (array_map('unlink', glob(APP_PATH . 'caches/*.cache'))) $routeCacheExists = false;
+        } if ( ! $routeCacheExists) {
             $GLOBALS['routePattern'] = array();
-            $GLOBALS['routeDomain'] = $_routeCachePath;
-            require $_routePath;
+            $GLOBALS['routeDomain'] = $routeCachePath;
+            require $routePath;
             Route::setModTime();
             unset($GLOBALS['routePattern'], $GLOBALS['routeDomain']);
         } unset($GLOBALS['routeModTime']);
         return self::parseRoute(self::applyRoute($app));
     }
 
-    private static function parseRoute($_routeParam)
+    private static function parseRoute($routeParam)
     {
-        if (preg_match('/([A-z0-9]+)@?([A-z0-9]+)?\|?(.+)?/', $_routeParam[0], $_match)) {
-            $_controllerName = 'app\\http\\controllers\\' . $_match[1];
-            $_controller = new $_controllerName;
-            if (empty($_routeParam[1]))
-                $_routeParam = array();
-            else unset($_routeParam[0]);
-            if (isset($_match[3])) {
-                $_middlewares = explode(',', $_match[3]);
-                foreach ($_middlewares as $_middleware) {
-                    $_middleware = 'app\\http\\middlewares\\' . $_middleware;
-                    call_user_func(array(new $_middleware, 'run'));
-                } unset($_middlewares);
-            } if (empty($_match[2])) {
-                if (empty($_routeParam))
-                    $_routeParam[1] = 'index';
-                $_routeParam = explode('/', $_routeParam[1]);
-                $_method = strtolower($_SERVER['REQUEST_METHOD']) . ucfirst($_routeParam[0]);
-                unset($_routeParam[0]);
-                if (method_exists($_controller, $_method))
-                    return call_user_func_array(array($_controller, $_method), $_routeParam);
-            } else if (method_exists($_controller, $_match[2]))
-                return call_user_func_array(array($_controller, $_match[2]), $_routeParam);
+        if (preg_match('/([A-z0-9]+)@?([A-z0-9]+)?\|?(.+)?/', $routeParam[0], $match)) {
+            $controllerName = 'app\\http\\controllers\\' . $match[1];
+            $controllerClass = new $controllerName;
+            if (empty($routeParam[1]))
+                $routeParam = array();
+            else unset($routeParam[0]);
+            if (isset($match[3])) {
+                $middlewares = explode(',', $match[3]);
+                foreach ($middlewares as $middleware) {
+                    $middleware = 'app\\http\\middlewares\\' . $middleware;
+                    call_user_func(array(new $middleware, 'run'));
+                } unset($middlewares);
+            } if (empty($match[2])) {
+                if (empty($routeParam))
+                    $routeParam[1] = 'index';
+                $routeParam = explode('/', $routeParam[1]);
+                $method = strtolower($_SERVER['REQUEST_METHOD']) . ucfirst($routeParam[0]);
+                unset($routeParam[0]);
+                if (method_exists($controllerClass, $method))
+                    return call_user_func_array(array($controllerClass, $method), $routeParam);
+            } else if (method_exists($controllerClass, $match[2]))
+                return call_user_func_array(array($controllerClass, $match[2]), $routeParam);
         } return View::make('errors/404');
     }
 
     private static function applyRoute($app)
     {
-        $_uri = ltrim(rtrim($_SERVER['REQUEST_URI'], '/'), '/');
-        $_uri = ltrim(str_replace($app['sub_folder'], '', $_uri), '/');
-        if ($_uri === '') $_uri = '[index]';
-        $_requestMethod = '/\[(Controller|' . $_SERVER['REQUEST_METHOD'] . ')\](.*)/';
-        $_fp = fopen(self::$routeCachePath, 'r');
-        while ( ! feof($_fp)) {
-            if (preg_match($_requestMethod, fgets($_fp), $_match)) {
-                $_route = explode(':', $_match[2]);
-                if (preg_match($_route[0], $_uri, $_match)) {
-                    if (fclose($_fp)) {
-                        $_match[0] = $_route[1];
-                        return $_match;
+        $uri = ltrim(rtrim($_SERVER['REQUEST_URI'], '/'), '/');
+        $uri = ltrim(str_replace($app['SubFolder'], '', $uri), '/');
+        if ($uri === '') $uri = '[index]';
+        $requestMethod = '/\[(Controller|' . $_SERVER['REQUEST_METHOD'] . ')\](.*)/';
+        $fp = fopen(self::$routeCachePath, 'r');
+        while ( ! feof($fp)) {
+            if (preg_match($requestMethod, fgets($fp), $match)) {
+                $_route = explode(':', $match[2]);
+                if (preg_match($_route[0], $uri, $match)) {
+                    if (fclose($fp)) {
+                        $match[0] = $_route[1];
+                        return $match;
                     }
                 }
             }

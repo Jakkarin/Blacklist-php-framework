@@ -1,5 +1,6 @@
 <?php
 
+ini_set('error_reporting', E_ALL);
 /**
  * ตรวจสอบ เวอร์ชั่นของ php
  */
@@ -14,20 +15,19 @@ define('APP_PATH', APP_ROOT . 'app' . DIRECTORY_SEPARATOR);
 define('APP_CONTENT', APP_ROOT . 'contents' . DIRECTORY_SEPARATOR);
 define('APP_SYSTEM', APP_ROOT . 'systems' . DIRECTORY_SEPARATOR);
 
-define('HTTP_HOST_TOKEN', md5($_SERVER['HTTP_HOST']));
-
 /**
  * PSR-4: Autoloader
  * @var Autoloader
  */
-spl_autoload_register(function($_className) {
-    $_filePath  = APP_ROOT . str_replace('\\', DIRECTORY_SEPARATOR, $_className) . '.php';
-    require $_filePath;
+spl_autoload_register(function($className) {
+    require APP_ROOT . str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
 });
 
 /**
  * ตั้งค่า timezone และ load class App
  */
 $app = systems\Config::get('app');
-date_default_timezone_set($app['timezone']);
+define('HTTP_HOST_TOKEN', md5($app['DefaultDomain']));
+date_default_timezone_set($app['TimeZone']);
+
 systems\App::run($app);

@@ -1,12 +1,12 @@
 <?php
 
 return array(
-    'dirvers'   => 'mysql',
-    'dbhost'    => 'localhost',
-    'dbname'    => 'blacklist',
-    'port'      => '',
-    'username'  => 'root',
-    'password'  => 'root',
-    'charset'   => 'utf8',
-    'timezone'  => 'Asia/Bangkok'
+    'Dirver'        => 'mysql',
+    'Host'          => 'localhost',
+    'DBName'        => 'blacklist',
+    'Port'          => '',
+    'UserName'      => 'root',
+    'Password'      => 'root',
+    'Charset'       => 'utf8',
+    'TimeZone'      => '+7:00'
 );

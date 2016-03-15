@@ -2,9 +2,9 @@
 
 class Widget
 {
-    public static function load($_widgetName, $_data = array())
+    public static function load($widgetName, $data = array())
     {
-        $_widgetName = 'app\\http\\widgets\\' . $_widgetName;
-        return forward_static_call_array(array($_widgetName, 'run'), $_data);
+        $widgetName = 'app\\http\\widgets\\' . $widgetName;
+        return forward_static_call_array(array($widgetName, 'run'), $data);
     }
 }

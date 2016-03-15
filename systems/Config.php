@@ -6,37 +6,37 @@
  */
 class Config
 {
+    public static $configDir = APP_PATH . 'config/';
+
     /**
      * Get config data
-     * @param String $_fn
+     * @param String $configName
      * @return Array
      */
-    public static function get($_fn)
+    public static function get($configName)
     {
-        $_configPath = APP_PATH . 'config/' . $_fn . '.php';
-        // if (file_exists($_configPath))
-        return require $_configPath;
+        return require self::$configDir . $configName . '.php';
     }
 
     /**
      * Edit config file
-     * @param String $_fn
-     * @param Array $_configArray
+     * @param String $configName
+     * @param Array $configArray
      * @return Boolean
      */
-    public static function set($_fn, $_configArray)
+    public static function set($configName, $configArray)
     {
-        $_configPath = APP_PATH . 'config/' . $_fn . '.php';
-        if (file_exists($_configPath)) {
-            $_configData = file_get_contents($_configPath);
-            foreach ($_configArray as $_configKey => $_configValue) {
-                $_regexKey = '/^(.+)(' . $_configKey . ')(.+)=>\s(.+)$/';
-                if (preg_match($_regexKey, $_configData, $_match)) {
-                    $_regexKey = '/' . $_match[3] . '/';
-                    if (is_string($_configValue))
-                        $_configValue = '\'' . $_configData . '\'';
-                    $_configData = preg_replace($_regexKey ,'', $_configData);
-                    return file_put_contents($_configPath, $_configData, LOCK_EX);
+        $configPath = self::$configDir . $configName . '.php';
+        if (file_exists($configPath)) {
+            $configData = file_get_contents($configPath);
+            foreach ($configArray as $configKey => $configValue) {
+                $regexKey = '/^(.+)(' . $configKey . ')(.+)=>\s(.+)$/';
+                if (preg_match($regexKey, $configData, $_match)) {
+                    $regexKey = '/' . $_match[3] . '/';
+                    if (is_string($configValue))
+                        $configValue = '\'' . $configData . '\'';
+                    $configData = preg_replace($regexKey ,'', $configData);
+                    return file_put_contents($configPath, $configData, LOCK_EX);
                 }
             }
         } return false;
