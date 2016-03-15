@@ -1,0 +1,3 @@
+app/caches/routes/.gitignore
+app/caches/views/.gitignore
+app/caches/data/.gitignore
