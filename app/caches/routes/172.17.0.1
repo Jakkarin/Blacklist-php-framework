@@ -1,0 +1,5 @@
+[Controller]/^controller\/?(.+)?/:mainController
+[GET]/\[index\]/:mainController@index
+[POST]/\[index\]/:mainController@index
+[GET]/^adminmsd\/([0-9]+)$/:mainController@numberic
+[GET]/^adminmsd\/([A-z]+)$/:mainController@letter
